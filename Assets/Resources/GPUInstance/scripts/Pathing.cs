@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 namespace GPUInstance
 {
     /// <summary>
+    /// ！ ？？ 为了方便 GPU 内控制移动
     /// Struct used to define how a GPU instance should move. It can follow a fixed path or use constant motion. Note* all motion occurs in local instance space- not world space.
     /// </summary>
     public struct Path

@@ -27,6 +27,8 @@ StructuredBuffer<int> groupDataBuffer;
 //this material instance's groupID
 int groupID;
 
+
+//！ 通信数据
 StructuredBuffer<int> instanceIDBuffer; //id buffer
 StructuredBuffer<instance_data> transformBuffer; //all transforms
 StructuredBuffer<float4x4> object2WorldBuffer; // contains object to world matrix for every instance

@@ -82,6 +82,7 @@ namespace GPUInstance
     }
 
     /// <summary>
+    /// ! 底层的内核代码
     /// Class for creating many identical meshes efficiently. This is object is used for internal purposes. See MeshInstancer.
     /// </summary>
     public sealed partial class instancemesh : System.IDisposable, InstanceMeshSet
@@ -157,6 +158,7 @@ namespace GPUInstance
         private int CopyFromPathsBufferKernel = -1;
         private int UpdatePathsBufferKernel = -1;
 
+        //???????  只有变化的 Buffer 才需要传递
         internal InstanceMeshDeltaBuffer<instance_delta> _delta_buffer { get; private set; }
         internal InstanceMeshDeltaBuffer<instance_properties_delta> _property_delta_buffer { get; private set; }
 
@@ -365,15 +367,19 @@ namespace GPUInstance
             this.GroupIDS = new InstanceIDGenerator(instancemesh.maxMeshTypes - 1);
 
             this.Initialized = true;
+
+            //TODO: 利用上 ComputerShader---------------------------------
             this.instancemeshShader = MonoBehaviour.Instantiate(Resources.Load<ComputeShader>("GPUInstance/instancemesh"));
             if (this.instancemeshShader == null) throw new System.Exception("Error, failed to load instance mesh compute shader");
 
             this.cmd.SetExecutionFlags(UnityEngine.Rendering.CommandBufferExecutionFlags.AsyncCompute);
             this.cmd.name = "InstanceMeshCMDBuffer";
 
+            //! 纠正一下数量
             //fix instance count
             this.MaxDeltaCount = System.Math.Max(kThreadGroupX, maxDeltaCount + (kThreadGroupX - (maxDeltaCount % kThreadGroupX)));
 
+            //！得到对应的内核ID
             // get kernels
             this.updateKernalID = this.instancemeshShader.FindKernel("UpdateBuffers");
             this.motionKernalID = this.instancemeshShader.FindKernel("MotionUpdate");
@@ -1308,6 +1314,11 @@ namespace GPUInstance
             }
         }
 
+        /// <summary>
+        /// ！ 让 ComputerShader 去计算每个实例？？？
+        /// </summary>
+        /// <param name="deltaTime"></param>
+        /// <param name="deltaTicks"></param>
         void computeshader_UpdateInitialize(float deltaTime, ulong deltaTicks)
         {
 #if UNITY_EDITOR
@@ -1604,6 +1615,9 @@ namespace GPUInstance
             }
         }
 
+        /// <summary>
+        /// ！ 执行命令
+        /// </summary>
         void execute_command_buffer()
         {
             Graphics.ExecuteCommandBufferAsync(this.cmd, UnityEngine.Rendering.ComputeQueueType.Urgent);

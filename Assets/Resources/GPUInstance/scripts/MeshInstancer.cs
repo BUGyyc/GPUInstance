@@ -5,6 +5,10 @@ using System.Threading;
 
 namespace GPUInstance
 {
+
+
+    //! ----------------------------- HardCore-----------------------------------------------
+
     // Wrapper object for instancemesh.cs
 
     /// <summary>
@@ -176,6 +180,7 @@ namespace GPUInstance
                     throw new System.Exception("Error, already initialized.");
 
                 this.mesh = new instancemesh();
+                //! HardCore
                 this.mesh.Initialize(
                     maxDeltaCount: deltaBufferCount,
                     InitialMaxInstanceCount: InitialInstanceBufferCount,
@@ -205,6 +210,7 @@ namespace GPUInstance
 
         /// <summary>
         ///  Append an item to the update buffer.
+        /// ！ 标记一个应用更新，表示不同状态的变化，同步脏标记可以表示不同情况下的处理
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="data"> data to be appended. The input data will be modified. </param>

@@ -47,6 +47,7 @@ namespace GPUInstanceTest
         // Start is called before the first frame update
         void Start()
         {
+            //！记录Sprite
             List<TextureUVAnimation> anims = new List<TextureUVAnimation>();
             anims.Add(MakeGPUTextureAnim(this.RunBack));
             anims.Add(MakeGPUTextureAnim(this.RunForward));
@@ -56,6 +57,7 @@ namespace GPUInstanceTest
             var tlib = new TextureAnimationLibrary(anims); // make texture animation library object.. This will just combine all the above lists into a single buffer
 
             this.m = new MeshInstancer(); // create & initialize mesh instancer
+            //! 初始化数据
             this.m.Initialize(override_mesh: BaseMeshLibrary.CreatePlane2Sides(), override_material: this.material, pathCount: 4); // override default cube with a two-sided plane that uses uv cutout shader
 
             this.m.SetAllTextureAnimations(tlib); // set all texture animations on GPU
@@ -63,6 +65,7 @@ namespace GPUInstanceTest
             // initialize paths that the instances will follow
             this.p = new PathArrayHelper(this.m);  
 
+            //! 对每个实例写入一个指定数据
             // Create instances
             for (int i = 0; i < N; i++)
                 for (int j = 0; j < N; j++)
@@ -111,6 +114,7 @@ namespace GPUInstanceTest
             this.m.DistanceCullingType = instancemesh.FrustumDistanceCullingType.UNIFORM_DISTANCE;
             this.m.UniformCullingDistance = this.FrustumCullingCamera == null ? 0 : Mathf.Abs(this.FrustumCullingCamera.transform.position.y);
 
+            //>>>>  HardCore---------------------------------------------------
             this.m.Update(Time.deltaTime);
 
             // Calculate position & rotation of instance

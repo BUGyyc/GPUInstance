@@ -51,10 +51,11 @@ namespace GPUInstance
                 //the total length of the animation in the float array is 8 * n + 1 
                 //where n is the number of tiles
                 var animation_id = index;
-
+                
                 TextureAnimationBuffer[index] = anim.animation.Count; // Set number of frames a sfirst element in the buffer for this animation
                 index += 1;
 
+                //! 把动画数据记录下来
                 foreach (var frame in anim.animation)
                 {
                     //set buffer data
@@ -69,6 +70,7 @@ namespace GPUInstance
                     index += 8;
                 }
 
+                //! 每个 Animation 重新赋予，并且写入 animationID;
                 this.Animations[anim_index] = new TextureUVAnimation(animations[anim_index].animation, animation_id);
             }
         }
@@ -124,6 +126,7 @@ namespace GPUInstance
         }
 
         /// <summary>
+        /// ！表示数据占用的大小，每个动画占用 8 byte , 再加上 1 byte 描述长度
         /// Length needed (in 4 byte floats) how much space is needed for this texture animation in gpu buffer format. 1 float for length, 8 * N for each frame.
         /// </summary>
         public int BufferLength { get { return animation.Count * 8 + 1; } }
