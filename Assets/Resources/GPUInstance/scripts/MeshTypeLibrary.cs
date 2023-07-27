@@ -236,6 +236,7 @@ namespace GPUInstance
             return mesh;
         }
         /// <summary>
+        /// ！创建了一个双面的 Plane
         /// Create a plane that is drawn on both sized z+ and z-
         /// </summary>
         /// <returns></returns>

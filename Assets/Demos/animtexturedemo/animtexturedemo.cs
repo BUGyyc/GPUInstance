@@ -7,6 +7,7 @@ namespace GPUInstanceTest
 {
     public class animtexturedemo : MonoBehaviour
     {
+        //! 四个方向的素材
         public List<Sprite> RunBack;
         public List<Sprite> RunForward;
         public List<Sprite> RunLeft;
@@ -35,6 +36,7 @@ namespace GPUInstanceTest
                 var atlas_pixel_height = (float)sprite.texture.height;
                 var frame = new TextureUVAnimation.Frame();
                 frame.Color = Color.white;
+                //? 读图集资源？
                 frame.offset = new Vector2(sprite.rect.xMin / atlas_pixel_width, sprite.rect.yMin / atlas_pixel_height);
                 frame.tiling = new Vector2(sprite.rect.width / atlas_pixel_width, sprite.rect.height / atlas_pixel_height);
                 anim.animation.Add(frame);

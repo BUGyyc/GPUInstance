@@ -1,3 +1,18 @@
+# Demo
+
+## AnimTexture
+
+![](99.res/pic/20230727103506.png)
+
+
+
+
+
+
+
+
+---
+
 # GPUInstance
 Instancing &amp; Animation library for Unity3D
 
