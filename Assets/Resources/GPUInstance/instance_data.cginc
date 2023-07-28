@@ -53,7 +53,7 @@ inline int reset_bit(int v, int index)
   return v & ~(1 << index);
 }
 
-
+//! 记录了实例化数据
 struct instance_data
 {
 	//position of the instance
@@ -95,6 +95,7 @@ struct instance_data
   // bone index- index in full skeleton of the bone
 };
 
+//? 变化的数据
 struct instance_delta
 {
 	float3 position;

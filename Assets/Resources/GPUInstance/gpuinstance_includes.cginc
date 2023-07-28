@@ -40,12 +40,14 @@ int get_group_start(int groupID)
   return groupDataBuffer[groupID - 1];
 }
 
+//! 获取实例ID
 int get_instance_id()
 {
   int __temp_id = get_group_start(groupID) + unity_InstanceID;
   return instanceIDBuffer[__temp_id];
 }
 
+//！获取实例的颜色
 fixed4 get_instance_color(in int id)
 {
   int c = propertyBuffer[transformBuffer[id].propertyID].color;
@@ -53,6 +55,7 @@ fixed4 get_instance_color(in int id)
   return fixed4(((c >> 24) & 255) * m, ((c >> 16) & 255) * m, ((c >> 8) & 255) * m, (c & 255) * m);
 }
 
+//! 获取实例的偏移
 float4 get_tile_offset(in int id)
 {
   float2 offset = propertyBuffer[transformBuffer[id].propertyID].offset;
@@ -60,6 +63,7 @@ float4 get_tile_offset(in int id)
   return float4(tiling.x, tiling.y, offset.x, offset.y);
 }
 
+//! 进行实例化的数据准备
 void do_instance_setup()
 {
   int id = get_group_start(groupID) + unity_InstanceID;

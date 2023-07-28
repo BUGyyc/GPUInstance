@@ -5,7 +5,21 @@
 ![](99.res/pic/20230727103506.png)
 
 
+1. 随机移动是怎么控制的？
 
+```
+// 在 ComputeShader 中，PropertySimulation 方法内
+
+float3 position;
+float3 direction;
+InterpolatePoints(pIndex, index, t_local, position, direction, !play_once, average, avg_weight, smoothing); // do interpolation
+
+```
+
+
+## Asteroids
+
+![](99.res/pic/20230728113715.png)
 
 
 

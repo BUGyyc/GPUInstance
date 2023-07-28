@@ -18,6 +18,8 @@
 		// Upgrade NOTE: excluded shader from OpenGL ES 2.0 because it uses non-square matrices
 #pragma exclude_renderers gles
 		// Physically based Standard lighting model
+
+		
 #pragma surface surf Standard addshadow vertex:vert alphatest:_Cutoff
 #pragma instancing_options procedural:setup
 #pragma target 5.0

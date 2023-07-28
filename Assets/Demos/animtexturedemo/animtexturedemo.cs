@@ -15,6 +15,9 @@ namespace GPUInstanceTest
 
         public Material material;
 
+        /// <summary>
+        /// ！Instance 的实际控制
+        /// </summary>
         private MeshInstancer m;
         private PathArrayHelper p;
 
@@ -23,6 +26,8 @@ namespace GPUInstanceTest
         const int N = 100;
 
         private GameObject follow_obj = null;
+
+        //！某个实例化的数据
         private InstanceData<InstanceProperties> follow_instance;
         private Path follow_path;
 

@@ -403,6 +403,7 @@ float3 path_unpack_direction(int pIndex, int index)
   return v;
 }
 
+//! 计算 Texture 动画
 //returns (offsetx, offsety, tilex, tiley) (a uv coordinates to use for this object)
 float2x4 DoTextureAnimation(float t, int texture_animation_id)
 {
@@ -722,6 +723,7 @@ void UpdatePathsBuffer(uint3 id : SV_DispatchThreadID)
 }
 
 
+//! 模拟
 [numthreads(kThreadGroupX, 1, 1)]
 void PropertySimulation(uint3 id : SV_DispatchThreadID)
 {
@@ -741,7 +743,9 @@ void PropertySimulation(uint3 id : SV_DispatchThreadID)
     uint anim_speed = get_animation_speed(props.extra);
     if (is_texture_anim && props.animationID > 0) // do texture animation
     {
+      //！ 模拟 Texture Animation
       float t = CalculateAnimationTicks(play_once, 100.0, anim_speed, props.instanceTicks); // use '100' which will be 1 second for animation length in seconds
+      //！计算得到矩阵数据
       float2x4 result = DoTextureAnimation(t, props.animationID);
       props.offset = result._11_21;
       props.tiling = result._12_22;
@@ -754,6 +758,7 @@ void PropertySimulation(uint3 id : SV_DispatchThreadID)
       float t = CalculateAnimationTicks(play_once, anim_clip_length, anim_speed, props.instanceTicks);
     }
 
+    //！ 处理移动路径相关数据
     // Handle path
     if (props.pathID > 0)
     {
@@ -798,6 +803,8 @@ void PropertySimulation(uint3 id : SV_DispatchThreadID)
         direction = yaw_only ? normalize(float3(direction.x, 0, direction.z)) : direction;
         up = yaw_only ? float3(0, 1, 0) : up;
 
+
+        //! 和移动有关 ？？？？？？？？？？？？？？？？？？
         transformBuffer[props.instance_id].position = position;
         transformBuffer[props.instance_id].rotation = RotationMatrixToQuaternion(RotationMatrixFromDirection(direction, up));
       }
