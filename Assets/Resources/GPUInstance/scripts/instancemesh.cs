@@ -780,6 +780,7 @@ namespace GPUInstance
         }
 
         /// <summary>
+        /// ！写入LOD 方便控制
         /// [Main Thread] Associate instances through LOD level
         /// </summary>
         /// <param name="lod0"></param>
@@ -812,6 +813,8 @@ namespace GPUInstance
                     if (lod_ratios[i] < 0)
                         throw new System.Exception("Error, invalid input lod ratios");
                     this.groupLOD[index + instancemesh.NumLODLevels + i] = LODRatio2Uint(lod_ratios[i]);
+
+                    //！groupID + LodId
                 }
 
                 this.pending_lod_group_updates.Add(lod0.groupID);
@@ -1542,6 +1545,7 @@ namespace GPUInstance
             return true; // Still pending updates, return true
         }
 
+        //!-------------------------------------------- HardCore-------------------------------------------------------
         void build_instancemesh_compute_command_buffer()
         {
             var instance_count = this._delta_buffer.IndirectBufferInstanceCount;
@@ -1585,6 +1589,7 @@ namespace GPUInstance
             }
             this.cmd.EndSample("Obj2World");
 
+            //! ??? 计算和选择相关的代码 ，例如LOD 判断可见？？---------------
             // Dispatch Select Render Instances & cumsum
             this.cmd.BeginSample("SelectRenderInstances");
             this.cmd.DispatchCompute(this.instancemeshShader, this.SelectRenderedInstancesKernel, instance_count / kThreadGroupX, 1, 1);
@@ -1638,7 +1643,8 @@ namespace GPUInstance
                 }
                 return false;
             }
-
+            
+            //! Core: 绘制的发起
             //gpu instance draw calls
             foreach (var pair in meshtypes)
             {

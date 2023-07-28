@@ -753,6 +753,7 @@ void PropertySimulation(uint3 id : SV_DispatchThreadID)
     }
     else if (props.animationID > 0)// just update animation ticks for bone animations
     {
+      //! 更新带 Bone 的 Animation
       int boneAnimID = animToBoneAnimMapBuffer[props.animationID + 0]; // dont actually need a bone... '0' is root bone and all boneAnimations for the same clip will have the same clip length (seconds)!
       float anim_clip_length = get_AnimationClipLength(boneAnimID);
       float t = CalculateAnimationTicks(play_once, anim_clip_length, anim_speed, props.instanceTicks);
@@ -814,6 +815,7 @@ void PropertySimulation(uint3 id : SV_DispatchThreadID)
   }
 }
 
+//! 动作更新相关
 [numthreads(kThreadGroupX, 1, 1)]
 void MotionUpdate(uint3 id : SV_DispatchThreadID)
 {
@@ -859,6 +861,7 @@ void MotionUpdate(uint3 id : SV_DispatchThreadID)
   }
 }
 
+//! 模型坐标转换为世界坐标
 [numthreads(kThreadGroupX, 1, 1)]
 void CalcObjectToWorld(uint3 id :  SV_DispatchThreadID)
 {
@@ -873,6 +876,8 @@ void CalcObjectToWorld(uint3 id :  SV_DispatchThreadID)
   }
 }
 
+
+//! 渲染要渲染的实例，例如：LOD 选择
 [numthreads(kThreadGroupX, 1, 1)]
 void SelectRenderedInstances(uint3 id :  SV_DispatchThreadID)
 {
@@ -900,6 +905,7 @@ void SelectRenderedInstances(uint3 id :  SV_DispatchThreadID)
     // calculate radius / camera distance ratio
     float rad_distance = r / get_camera_distance(world_pos, CULLING_TYPE);
 
+    //! 选择LOD
     // calculate lod level (assuming NUM_LODS == 5)
     int lod_index = group_lod_index(static_group_id);
     int lod = 0;
@@ -909,6 +915,7 @@ void SelectRenderedInstances(uint3 id :  SV_DispatchThreadID)
     }
     lod = CULLING_TYPE == CULLING_TYPE_NONE ? 0 : lod; // dont calculate lod if there is no camera to compare with
 
+    //! 判断剔除的情况
     //if culling_count > 0 (culling disabled or passed culling test)
     bool cull = (CULLING_TYPE > CULLING_TYPE_NONE) && //if culling enabled
       ((outside_frustum_count(world_pos, r) > 0) || //object inside camera frustum
@@ -928,6 +935,7 @@ void SelectRenderedInstances(uint3 id :  SV_DispatchThreadID)
     myData.data1 = set_lod(myData.data1, lod);
     transformBuffer[instance_id].data1 = myData.data1;
 
+    //! 可见、并且未必剔除，才能渲染
     // render if not culled and not invisible
     bool is_bone = get_bit(myData.data1, Data1_Flag_Is_Bone);
     bool render = !cull && !get_bit(myData.data1, Data1_Flag_Invisible);
@@ -944,6 +952,7 @@ void SelectRenderedInstances(uint3 id :  SV_DispatchThreadID)
   }
 }
 
+//! 预备好需要绘制的实例
 [numthreads(kThreadGroupX, 1, 1)]
 void PrepareRenderedInstances(uint3 id :  SV_DispatchThreadID)
 {
