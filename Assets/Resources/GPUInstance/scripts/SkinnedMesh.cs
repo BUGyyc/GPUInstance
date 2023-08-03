@@ -145,6 +145,7 @@ namespace GPUInstance
         {
             Vector3 position; Quaternion rotation; Vector3 scale;
             CalcTRS(path, p, out position, out rotation, out scale);
+            //! 得到一个变换矩阵
             Matrix4x4 mesh2world = Matrix4x4.TRS(position, rotation, scale);
             return this.skeleton.CalculateBone2World(mesh2world, bone, this._current_anim, this._anim_tick_start, this.mesh);
         }

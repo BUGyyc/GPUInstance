@@ -42,6 +42,7 @@ namespace GPUInstanceTest
             imesher.Initialize(ref child1);
             imesher.Initialize(ref child2);
 
+            //！表示包含关系
             parent.parentID = instancemesh.NULL_ID;
             child1.parentID = parent.id;
             child2.parentID = child1.id;
@@ -58,6 +59,7 @@ namespace GPUInstanceTest
 
         private void Update()
         {
+            //？？？只有 Parent ？？
             parent.position = position;
             parent.scale = scale;
             parent.DirtyFlags = parent.DirtyFlags | DirtyFlag.Scale | DirtyFlag.Position;

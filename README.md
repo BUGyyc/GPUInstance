@@ -21,9 +21,65 @@ InterpolatePoints(pIndex, index, t_local, position, direction, !play_once, avera
 
 ![](99.res/pic/20230728113715.png)
 
+2. LOD 在项目中的流程处理？如何生效的？
+
+```
+// 记录LOD数据
+public void AddInstanceLOD(MeshType lod0, MeshType lod1, MeshType lod2, MeshType lod3, MeshType lod4, float[] lod_ratios)｛//...｝
+
+```
+
+在 ComputeShader 中，有筛选 LOD 的等级
+
+```
+    //! 选择LOD
+    // calculate lod level (assuming NUM_LODS == 5)
+    int lod_index = group_lod_index(static_group_id);
+    int lod = 0;
+    for (int i = 1; i < NUM_LODS; i++) // note* loop will unroll (NUM_LODS is constant defined)
+    {
+      lod = rad_distance < lod_radius_ratio(groupLODBuffer[lod_index + NUM_LODS + i]) * LOD_QUALITY ? i : lod;
+    }
+    lod = CULLING_TYPE == CULLING_TYPE_NONE ? 0 : lod; // dont calculate lod if there is no camera to compare with
+
+```
+
+## Billboard
+
+![](99.res/pic/20230728140718.png)
+
+3.广告板的特别之处在哪里？对比第一个例子的特别之处
+
+```
+
+```
+
+## Crowd
+
+![](99.res/pic/20230731095614.png)
+
+4.动画的控制方式是怎样的？如何导出动画到GPU中？如果动画文件过多会怎么样？
+
+```
+
+
+```
+
+## InstanceParent
+
+
+![](99.res/pic/20230731104039.png)
 
 
 
+## InstanceAnimation
+
+![](99.res/pic/20230731104458.png)
+
+
+## InstanceCube
+
+![](99.res/pic/20230731105108.png)
 
 ---
 

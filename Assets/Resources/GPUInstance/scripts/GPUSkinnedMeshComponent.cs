@@ -63,6 +63,7 @@ namespace GPUInstance
                 obj.gameObject.SetActive(false);
             }
 
+            //! 删除多余的动画
             // Remove duplicate controllers
             Dictionary<AnimationController, AnimationController> controllers_set = new Dictionary<AnimationController, AnimationController>();
             for (int i = 0; i < list.Count; i++)

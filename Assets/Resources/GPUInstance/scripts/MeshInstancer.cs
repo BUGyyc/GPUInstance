@@ -619,6 +619,7 @@ namespace GPUInstance
                         {
                             var mode = override_shadows ? shadow_mode : mesh_renderer.shadowCastingMode;
                             var rcv_shadow = override_shadows ? receive_shadows : mesh_renderer.receiveShadows;
+                            //! 还是把每个 LOD 模型记录下来
                             mtype = this.mesh.AddInstancedMesh(mesh: mesh, mat: mat, mode: mode, receive_shadows: rcv_shadow);
                         }
 
@@ -635,9 +636,11 @@ namespace GPUInstance
                     }
                 }
 
+                //！ 把 LOD 模型写入
                 // now tell instancemesh object about the LOD relationships
                 this.mesh.AddInstanceLOD(c.MeshTypes[0], c.MeshTypes[1], c.MeshTypes[2], c.MeshTypes[3], c.MeshTypes[4], c.LOD_Radius_Ratios);
 
+                //! 等同于 LOD 内的模型记录下来了
                 // return the LOD x skin matrix
                 return c.MeshTypes;
             }

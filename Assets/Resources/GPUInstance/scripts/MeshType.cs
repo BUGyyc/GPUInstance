@@ -86,6 +86,7 @@ namespace GPUInstance
         /// </summary>
         public ushort groupID { get; private set; } = 0;
 
+        //??? 这么大的尺寸，意味着CPU没有做剔除，是在GPU剔除的
         public Bounds bounds = new Bounds(Vector3.zero, Vector3.one * 100000);
         public UnityEngine.Rendering.ShadowCastingMode castShadows { get; set; }
         public bool receiveShadows { get; set; }

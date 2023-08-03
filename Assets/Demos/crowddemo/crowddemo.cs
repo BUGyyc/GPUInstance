@@ -20,6 +20,8 @@ namespace GPUInstanceTest
         private SkinnedMesh[,] instances = new SkinnedMesh[N, N];
         private Path[,] paths = new Path[N, N];
 
+
+        //！ 只是为了在固定范围内随机坐标
         public GameObject floor;
         private float floorWidth { get { return this.floor.transform.localScale.x * 64; } }
         private float floorLength { get { return this.floor.transform.localScale.z * 64; } }
@@ -34,6 +36,7 @@ namespace GPUInstanceTest
         {
             // Initialize character mesh list
             int hierarchy_depth, skeleton_bone_count;
+            //??? -----------  构建 AnimatorController 数组，每种角色不同的 AnimatorController
             var controllers = GPUSkinnedMeshComponent.PrepareControllers(characters, out hierarchy_depth, out skeleton_bone_count);
 
             // Initialize GPU Instancer
@@ -48,8 +51,9 @@ namespace GPUInstanceTest
             foreach (var character in this.characters)
                 this.m.AddGPUSkinnedMeshType(character);
 
+            //！初始化 Instance 对象的数据
             // Do stuff
-            for (int i = 0; i < N; i++)
+            for (int i = 0; i < N; i++){
                 for (int j = 0; j < N; j++)
                 {
                     var mesh = characters[Random.Range(0, characters.Count)];
@@ -67,7 +71,9 @@ namespace GPUInstanceTest
 
                     instances[i, j].UpdateAll();
                 }
+            }
 
+            //! 第一个对象的骨骼位置
             // For testing purposes.. do bone visualization of [0,0] model
             bones_unity = new GameObject[instances[0, 0].skeleton.data.Length];
             for (int i = 0; i < bones_unity.Length; i++)
@@ -83,7 +89,8 @@ namespace GPUInstanceTest
             Ticks.GlobalTimeSpeed = this.GlobalTimeSpeed;
             this.m.FrustumCamera = this.FrustumCullingCamera;
             this.m.Update(Time.deltaTime);
-
+            
+            //! 把第一个对象的骨骼位置更新出来
             // visualize bone cpu-gpu synchronization
             for (int i = 0; i < bones_unity.Length; i++)
             {
